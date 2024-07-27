@@ -15,6 +15,7 @@ var decryptedFileList []string
 var isDeclared = false
 var isEncrypted = false
 var isDecrypted = false
+var completedCount int = 0
 
 func DeclareListByDirectory(directoryPath string) error {
 	isDeclared = false
@@ -111,4 +112,18 @@ func deleteFiles(optionalDeleteEncryptedFiles ...bool) int {
 		}
 	}
 	return 0
+}
+
+func GetListLength() int {
+	return len(fileList)
+}
+
+func GetEncryptionCompletedCount() int {
+	completedCount = len(encryptedFileList)
+	return completedCount
+}
+
+func GetDecryptionCompletedCount() int {
+	completedCount = len(decryptedFileList)
+	return completedCount
 }
