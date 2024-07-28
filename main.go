@@ -3,6 +3,7 @@ package main
 import (
 	"Enclave/core/micro"
 	"Enclave/corehandler"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -59,6 +60,10 @@ func main() {
 	// Encrypt
 	corehandler.StartEncryption(password)
 	log.Print("Done. ")
+	_, err := fmt.Scan()
+	if err != nil {
+		return
+	}
 }
 
 func declare(pathsList []string) {
@@ -114,8 +119,11 @@ func setupScanner() {
 		panic("Unrecognized setup command: " + setups[0])
 	}
 
+	log.Print("Decrypting: ", setups[0])
+
 	if setups[1] != "" {
 		password = setups[1]
+		log.Print("Password: ", password, "(end)")
 	} else {
 		panic("Unrecognized setup command: " + setups[1])
 	}
