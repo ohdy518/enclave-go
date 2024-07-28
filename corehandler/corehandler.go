@@ -14,6 +14,22 @@ func DeclareListByDirectory(path string) error {
 	return nil
 }
 
+func AppendListByDirectory(path string) error {
+	var err = requesthandler.AppendListByDirectory(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func AppendListByFile(path string) error {
+	var err = requesthandler.AppendListByFile(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetListLength() int {
 	return requesthandler.GetListLength()
 }

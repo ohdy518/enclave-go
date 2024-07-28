@@ -5,6 +5,7 @@ import (
 	"Enclave/core/filehandler"
 	"Enclave/core/micro"
 	"errors"
+	"log"
 	"os"
 )
 
@@ -36,6 +37,28 @@ func DeclareListByDirectory(directoryPath string) error {
 
 	isDeclared = true
 
+	return nil
+}
+
+func AppendListByDirectory(directoryPath string) error {
+	files, err := directorytools.GetFilesInDirectory(directoryPath)
+	if err != nil {
+		return err
+	}
+	tempList := make([]string, 0)
+	for _, file := range files {
+		tempList = append(tempList, file)
+	}
+	fileList = append(fileList, tempList...)
+	fileList = micro.RemoveDuplicate(fileList)
+	isDeclared = true
+	return nil
+}
+
+func AppendListByFile(filePath string) error {
+	fileList = append(fileList, filePath)
+	fileList = micro.RemoveDuplicate(fileList)
+	isDeclared = true
 	return nil
 }
 
@@ -78,6 +101,7 @@ func DecryptFileList(password string, optionalEncryptedFileExtension ...string) 
 		decryptedFilePath := micro.SubtractString(file, encryptedFileExtension)
 		err := filehandler.DecryptFile(password, file, decryptedFilePath)
 		if err != nil {
+			log.Fatal(err)
 			return 1
 		}
 		decryptedFileList = append(decryptedFileList, decryptedFilePath)
