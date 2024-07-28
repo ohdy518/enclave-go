@@ -1,6 +1,9 @@
 package corehandler
 
-import "Enclave/core/requesthandler"
+import (
+	"Enclave/core/requesthandler"
+	"log"
+)
 
 func DeclareListByDirectory(path string) error {
 	var err = requesthandler.DeclareListByDirectory(path)
@@ -24,7 +27,10 @@ func GetDecryptionCompletedCount() int {
 }
 
 func StartEncryption(password string) {
-	requesthandler.EncryptFileList(password)
+	var err = requesthandler.EncryptFileList(password)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func StartDecryption(password string) int {

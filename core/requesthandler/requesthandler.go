@@ -4,6 +4,7 @@ import (
 	"Enclave/core/directorytools"
 	"Enclave/core/filehandler"
 	"Enclave/core/micro"
+	"errors"
 	"os"
 )
 
@@ -38,21 +39,21 @@ func DeclareListByDirectory(directoryPath string) error {
 	return nil
 }
 
-func EncryptFileList(password string, optionalEncryptedFileExtension ...string) int {
+func EncryptFileList(password string, optionalEncryptedFileExtension ...string) error {
 	encryptedFileExtension := DefaultEncryptedFileExtension
 	if len(optionalEncryptedFileExtension) > 0 {
 		encryptedFileExtension = optionalEncryptedFileExtension[0]
 	}
 
 	if !isDeclared {
-		return 1
+		return errors.New("not declared")
 	}
 
 	for _, file := range fileList {
 		encryptedFilePath := file + encryptedFileExtension
 		err := filehandler.EncryptFile(password, file, encryptedFilePath)
 		if err != nil {
-			return 1
+			return err
 		}
 		encryptedFileList = append(encryptedFileList, encryptedFilePath)
 	}
@@ -60,7 +61,7 @@ func EncryptFileList(password string, optionalEncryptedFileExtension ...string) 
 	isEncrypted = true
 	deleteFiles()
 
-	return 0
+	return nil
 }
 
 func DecryptFileList(password string, optionalEncryptedFileExtension ...string) int {
